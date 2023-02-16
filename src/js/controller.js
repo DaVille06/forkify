@@ -31,10 +31,15 @@ const renderSpinner = function (parentEl) {
 
 const showReceipe = async function () {
   try {
+    // get the recipe id from the url
+    const id = window.location.hash.slice(1);
+
+    if (!id) return;
+
     // loading recipe
     renderSpinner(recipeContainer);
     const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886`
+      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
     );
 
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
@@ -157,4 +162,6 @@ const showReceipe = async function () {
     alert(err);
   }
 };
-showReceipe();
+
+// simple way of adding multiple event listeners
+['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showReceipe));
